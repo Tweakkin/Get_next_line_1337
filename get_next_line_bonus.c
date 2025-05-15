@@ -17,6 +17,8 @@ size_t	allocate_buff(int fd, char **buff)
 	size_t	fdlen;
 
 	*buff = (char *)malloc(BUFFER_SIZE + 1);
+	if (!*buff)
+		return (0);
 	fdlen = read(fd, *buff, BUFFER_SIZE);
 	if (fdlen <= 0)
 	{
@@ -47,8 +49,10 @@ char	*create_line(char *buff)
 		j++;
 	}
 	if (buff[j] == '\n')
+	{
 		line[j] = '\n';
-	j++;
+		j++;
+	}
 	line[j] = '\0';
 	return (line);
 }
@@ -73,24 +77,24 @@ void	re_adjust_buff(char **buff)
 	(*buff)[j] = '\0';
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line_bonus(int fd)
 {
-	static char		*buff;
+	static char		*buff[FD_SIZE];
 	char			*line;
 
-	if (fd < 0)
+	if (fd < 0 || fd >= FD_SIZE || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (!buff)
+	if (!buff[fd])
 	{
-		if (allocate_buff(fd, &buff) == 0)
+		if (allocate_buff(fd, &buff[fd]) == 0)
 			return (NULL);
 	}
-	line = create_line(buff);
-	re_adjust_buff(&buff);
-	if (buff[0] == '\0')
+	line = create_line(buff[fd]);
+	re_adjust_buff(&buff[fd]);
+	if (buff[fd][0] == '\0')
 	{
-		free(buff);
-		buff = NULL;
+		free(buff[fd]);
+		buff[fd] = NULL;
 	}
 	return (line);
 }

@@ -26,7 +26,7 @@
 #  define FD_SIZE 4096
 # endif
 
-char	*get_next_line(int fd);
+char	*get_next_line_bonus(int fd);
 char	*ft_strdup(const char *str);
 char	*strcopy(const char *src, int dstlen);
 size_t	ft_strlen(const char *str);
