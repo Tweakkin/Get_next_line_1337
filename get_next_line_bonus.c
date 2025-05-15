@@ -77,7 +77,7 @@ void	re_adjust_buff(char **buff)
 	(*buff)[j] = '\0';
 }
 
-char	*get_next_line_bonus(int fd)
+char	*get_next_line(int fd)
 {
 	static char		*buff[FD_SIZE];
 	char			*line;
