@@ -90,7 +90,8 @@ char	*get_next_line(int fd)
 			return (NULL);
 	}
 	line = create_line(buff[fd]);
-	re_adjust_buff(&buff[fd]);
+	if (line != NULL)
+		re_adjust_buff(&buff[fd]);
 	if (buff[fd][0] == '\0')
 	{
 		free(buff[fd]);
